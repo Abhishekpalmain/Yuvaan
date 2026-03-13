@@ -8,8 +8,8 @@ import sys
 import os
 from pathlib import Path
 
-# Add src to path
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+# Add project root to path so we can import src as a package
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 def test_pillar1_gst():
     """Test GST Reconciliation Module"""
