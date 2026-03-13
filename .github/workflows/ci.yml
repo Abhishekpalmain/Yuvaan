@@ -1,0 +1,79 @@
+name: Intelli-Credit CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11"]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Lint with flake8
+      run: |
+        pip install flake8
+        # Stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # Exit-zero treats all errors as warnings
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+    - name: Check typing with mypy (optional)
+      run: |
+        pip install mypy
+        mypy src/ utils/ main.py --ignore-missing-imports || true
+
+    - name: Run the pipeline
+      run: |
+        python main.py
+      env:
+        PYTHONPATH: ${{ github.workspace }}
+
+    - name: Check output files exist
+      run: |
+        test -f data/CAM_TechForge_Solutions_Pvt_Ltd.docx
+        test -f data/TechForge_Solutions_Pvt_Ltd_Research_Report.json
+        test -f logs/intelli-credit.log
+
+    - name: Upload CAM document as artifact
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: cam-document-${{ matrix.python-version }}
+        path: data/CAM_*.docx
+
+  security:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Check for secrets
+      run: |
+        # Check for accidentally committed API keys
+        if grep -r "sk-" . --include="*.py" --include="*.yaml" --include="*.yml" --include="*.json" --include="*.txt" 2>/dev/null; then
+          echo "Potential secrets found!"
+          exit 1
+        fi
+        echo "No obvious secrets detected."
+
+    - name: Ensure .gitignore is effective
+      run: |
+        # Check if any sensitive files are tracked
+        git ls-files | grep -E "\.(key|pem|env|secret)" && exit 1 || echo "No sensitive files tracked"
+        git ls-files | grep -q ".claude/" && exit 1 || echo "No .claude directory tracked"
