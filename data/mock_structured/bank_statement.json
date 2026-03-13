@@ -1,0 +1,26 @@
+[
+    {
+        "Transaction_ID": "TXN9901",
+        "Date": "2024-03-01",
+        "Description": "NEFT-IN FROM CLIENT A",
+        "Withdrawal": 0,
+        "Deposit": 500000,
+        "Balance": 1200000
+    },
+    {
+        "Transaction_ID": "TXN9902",
+        "Date": "2024-03-15",
+        "Description": "RTGS-OUT TO SHELLCORP CONSULTANTS",
+        "Withdrawal": 1770000,
+        "Deposit": 0,
+        "Balance": -570000
+    },
+    {
+        "Transaction_ID": "TXN9903",
+        "Date": "2024-03-16",
+        "Description": "RTGS-IN FROM SHELLCORP CONSULTANTS",
+        "Withdrawal": 0,
+        "Deposit": 1750000,
+        "Balance": 1180000
+    }
+]

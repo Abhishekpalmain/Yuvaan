@@ -1,0 +1,39 @@
+{
+  "GSTIN": "27AADCB2230M1Z5",
+  "Legal_Name": "TechForge Solutions Pvt Ltd",
+  "Financial_Year": "2023-2024",
+  "Return_Period": "March",
+  "GSTR_3B_Summary": {
+    "Total_Outward_Supplies_Taxable_Value": 5000000,
+    "Total_IGST": 450000,
+    "Total_CGST": 225000,
+    "Total_SGST": 225000,
+    "Total_ITC_Available": {
+      "IGST": 300000,
+      "CGST": 150000,
+      "SGST": 150000
+    }
+  },
+  "GSTR_2A_B2B_Invoices": [
+    {
+      "Supplier_GSTIN": "27BDFGH8291L1Z2",
+      "Supplier_Name": "CloudNexus Hosting",
+      "Invoice_Number": "CN-23-441",
+      "Invoice_Date": "2024-03-05",
+      "Taxable_Value": 800000,
+      "IGST": 144000,
+      "CGST": 0,
+      "SGST": 0
+    },
+    {
+      "Supplier_GSTIN": "27XYZZZ9999P1QQ",
+      "Supplier_Name": "ShellCorp Consultants (Suspicious)",
+      "Invoice_Number": "SC-001",
+      "Invoice_Date": "2024-03-12",
+      "Taxable_Value": 1500000,
+      "IGST": 270000,
+      "CGST": 0,
+      "SGST": 0
+    }
+  ]
+}

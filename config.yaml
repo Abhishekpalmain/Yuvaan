@@ -1,0 +1,69 @@
+# Intelli-Credit Configuration
+
+# Company being analyzed
+company:
+  name: "TechForge Solutions Pvt Ltd"
+  sector: "IT Services / Cloud"
+  gstin: "27AADCB2230M1Z5"
+
+# Paths
+paths:
+  bank_statement: "data/mock_structured/bank_statement.json"
+  gst_data: "data/mock_structured/gst_data.json"
+  output_dir: "data"
+  logs_dir: "logs"
+
+# Detection Thresholds
+thresholds:
+  circular_trading:
+    max_loop_depth: 5
+    min_transaction_amount: 100000
+  gst_reconciliation:
+    discrepancy_threshold: 0.1  # 10% tolerance
+  cibil:
+    excellent_threshold: 3  # 1-3 is excellent
+    poor_threshold: 8       # 8-10 is poor
+
+# Scoring Configuration
+scoring:
+  base_score: 80
+  deductions:
+    gst_discrepancy: -20
+    circular_trading: -50
+    poor_cibil: -10
+    excellent_cibil: +10
+
+# Decision Thresholds
+decisions:
+  approve_min_score: 70
+  approve_min_limit: 50000000  # INR 5 Crore
+  approve_min_limit_formatted: "INR 5,00,00,000"
+  approve_rate: "10.5% p.a."
+  conditional_min_score: 50
+  conditional_max_limit: 20000000  # INR 2 Crore
+  conditional_max_limit_formatted: "INR 2,00,00,000"
+  conditional_rate: "12.0% p.a. (Risk Premium Applied)"
+
+# Research Agent Configuration
+research:
+  sources:
+    - "MCA Portal"
+    - "e-Courts"
+    - "RBI News"
+    - "Sector Reports"
+  enable_mca_check: true
+  enable_ecourts_check: true
+  enable_news_scraping: true
+  user_notes_enabled: true
+
+# API Configuration (for future integration)
+api:
+  host: "localhost"
+  port: 8000
+  debug: false
+
+# Logging
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/intelli-credit.log"
