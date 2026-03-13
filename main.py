@@ -296,13 +296,13 @@ def main():
         if args.output_json:
             with open(args.output_json, 'w') as f:
                 json.dump(results, f, indent=2)
-            print(f"\n✅ Results saved to: {args.output_json}")
+            print(f"\n[OK] Results saved to: {args.output_json}")
 
     except FileNotFoundError as e:
-        print(f"❌ Error: Configuration file not found: {e}")
+        print(f"[FAIL] Error: Configuration file not found: {e}")
         sys.exit(1)
     except Exception as e:
-        print(f"❌ Error: {str(e)}")
+        print(f"[FAIL] Error: {str(e)}")
         import traceback
         traceback.print_exc()
         sys.exit(1)

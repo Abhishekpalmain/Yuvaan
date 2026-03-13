@@ -22,21 +22,21 @@ def test_pillar1_gst():
 
         result = flag_gst_discrepancies("data/mock_structured/gst_data.json")
 
-        print(f"✅ Function executed successfully")
+        print(f"[OK] Function executed successfully")
         print(f"   Company: {result['company_name']}")
         print(f"   Discrepancies found: {len(result['discrepancies'])}")
 
         if result['summary']['has_discrepancy']:
-            print(f"   ⚠️ GST discrepancy detected (as expected for demo)")
-            print(f"   Claimed IGST: ₹{result['summary']['claimed_igst']:,}")
-            print(f"   Actual IGST: ₹{result['summary']['actual_igst']:,}")
+            print(f"   [WARN]  GST discrepancy detected (as expected for demo)")
+            print(f"   Claimed IGST: INR {result['summary']['claimed_igst']:,}")
+            print(f"   Actual IGST: INR {result['summary']['actual_igst']:,}")
         else:
-            print("   ✓ No GST discrepancies")
+            print("   [OK]  No GST discrepancies")
 
         return True
 
     except Exception as e:
-        print(f"❌ Test failed: {str(e)}")
+        print(f"[FAIL]  Test failed: {str(e)}")
         import traceback
         traceback.print_exc()
         return False
@@ -53,23 +53,23 @@ def test_pillar1_circular():
 
         result = detect_circular_trading("data/mock_structured/bank_statement.json")
 
-        print(f"✅ Function executed successfully")
+        print(f"[OK] Function executed successfully")
         print(f"   Entities analyzed: {result['total_entities']}")
         print(f"   Transactions processed: {result['total_transactions']}")
         print(f"   Cycles detected: {result['cycles_detected']}")
 
         if result['cycles_detected']:
-            print(f"   ⚠️ {len(result['cycles'])} circular loop(s) found:")
+            print(f"   [WARN]  {len(result['cycles'])} circular loop(s) found:")
             for cycle in result['cycles']:
                 path = " -> ".join(cycle['path'])
                 print(f"      {path} -> {cycle['path'][0]}")
         else:
-            print("   ✓ No circular trading detected")
+            print("   [OK]  No circular trading detected")
 
         return True
 
     except Exception as e:
-        print(f"❌ Test failed: {str(e)}")
+        print(f"[FAIL]  Test failed: {str(e)}")
         import traceback
         traceback.print_exc()
         return False
@@ -95,7 +95,7 @@ def test_pillar2():
 
         findings = agent.research_company(company, sector)
 
-        print(f"✅ Research completed successfully")
+        print(f"[OK] Research completed successfully")
         print(f"   Litigation Risk: {findings['overall_assessment']['litigation_risk']}")
         print(f"   Sector Risk: {findings['overall_assessment']['sector_risk']}")
         print(f"   Sources checked: {', '.join(findings['sources_checked'])}")
@@ -105,14 +105,14 @@ def test_pillar2():
         # Check output file exists
         report_path = Path(f"data/{company.replace(' ', '_')}_Research_Report.json")
         if report_path.exists():
-            print(f"   ✓ Report saved: {report_path}")
+            print(f"   [OK]  Report saved: {report_path}")
         else:
-            print(f"   ⚠️ Report file not found at expected location")
+            print(f"   [WARN]  Report file not found at expected location")
 
         return True
 
     except Exception as e:
-        print(f"❌ Test failed: {str(e)}")
+        print(f"[FAIL]  Test failed: {str(e)}")
         import traceback
         traceback.print_exc()
         return False
@@ -146,7 +146,7 @@ def test_pillar3():
             cibil_rank=4
         )
 
-        print(f"✅ Evaluation completed successfully")
+        print(f"[OK] Evaluation completed successfully")
         print(f"   Base Score: {evaluation['base_score']}")
         print(f"   Final Score: {evaluation['final_score']}/100")
         print(f"   Recommendation: {evaluation['recommendation']}")
@@ -159,14 +159,14 @@ def test_pillar3():
         doc_path = engine.generate_cam_document(evaluation)
 
         if Path(doc_path).exists():
-            print(f"   ✅ CAM document created: {doc_path}")
+            print(f"   [OK] CAM document created: {doc_path}")
         else:
-            print(f"   ⚠️ CAM document not found at {doc_path}")
+            print(f"   [WARN]  CAM document not found at {doc_path}")
 
         return True
 
     except Exception as e:
-        print(f"❌ Test failed: {str(e)}")
+        print(f"[FAIL]  Test failed: {str(e)}")
         import traceback
         traceback.print_exc()
         return False
@@ -189,13 +189,13 @@ def main():
     all_files_exist = True
     for file_path in required_files:
         if Path(file_path).exists():
-            print(f"   ✓ {file_path}")
+            print(f"   [OK]  {file_path}")
         else:
-            print(f"   ✗ {file_path} - NOT FOUND")
+            print(f"   [FAIL] {file_path} - NOT FOUND")
             all_files_exist = False
 
     if not all_files_exist:
-        print("\n❌ Cannot run tests - missing required files")
+        print("\n[FAIL]  Cannot run tests - missing required files")
         sys.exit(1)
 
     print("\n" + "="*60)
@@ -218,16 +218,16 @@ def main():
     total = len(results)
 
     for test_name, passed_flag in results.items():
-        status = "✅ PASS" if passed_flag else "❌ FAIL"
+        status = "[OK] PASS" if passed_flag else "[FAIL]  FAIL"
         print(f"{status} - {test_name}")
 
     print(f"\nTotal: {passed}/{total} tests passed")
 
     if passed == total:
-        print("\n🎉 All tests passed! Intelli-Credit is working correctly.")
+        print("\n[TEST] All tests passed! Intelli-Credit is working correctly.")
         return 0
     else:
-        print(f"\n⚠️ {total-passed} test(s) failed. Check output above.")
+        print(f"\n[WARN]  {total-passed} test(s) failed. Check output above.")
         return 1
 
 
